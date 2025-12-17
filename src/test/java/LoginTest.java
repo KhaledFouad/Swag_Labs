@@ -1,21 +1,15 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LoginTest extends  BaseTest {
+
     @Test(dataProviderClass = TestProvider.class, dataProvider = "loginData")
     public void validLoginTest(String username, String password) {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(username, password);
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Login failed -); URL mismatch");
     }
-
 
     @Test(dataProviderClass = TestProvider.class, dataProvider = "addToCartData")
     public void addItemToCart(String username, String password, String itemId) {
@@ -28,7 +22,6 @@ public class LoginTest extends  BaseTest {
         Assert.assertEquals(
              productPage.getProductPageTitle(), "Your Cart", "Add to cart failed -);"
         );
-
     }
 
     @Test(dataProviderClass = TestProvider.class, dataProvider = "checkoutData")
