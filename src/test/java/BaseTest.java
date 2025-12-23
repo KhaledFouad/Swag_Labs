@@ -1,32 +1,31 @@
+import driver_factory.DriverFacory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import utils.ConfigLoader;
+import utils.EXcelFileManager;
+import utils.JsonFileManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class BaseTest {
     WebDriver driver;
-    ConfigLoader configLoader = new ConfigLoader("src/test/resources/config.properties");
+    ConfigLoader configLoader = new ConfigLoader("src/main/resources/config.properties");
+    public JsonFileManager jsonFileManager;
+    public EXcelFileManager excelFileManager;
+
     @BeforeMethod
+
+
     public void setUp() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");
-        options.addArguments("--disable-features=PasswordLeakDetection,PasswordManagerOnboarding");
-        options.addArguments("--disable-save-password-bubble");
-        options.addArguments("--password-store=basic");
 
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-        prefs.put("profile.password_manager_leak_detection", false);
-        options.setExperimentalOption("prefs", prefs);
-
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.get(configLoader.getProperty("url"));
+        excelFileManager = new EXcelFileManager("src/main/resources/Providerss.xlsx", "KhaledSheet");
+        jsonFileManager = new JsonFileManager("src/main/resources/Credentials.json");
+        driver = DriverFacory.getDriver("chrome");
+        driver.get( configLoader.getProperty("url")  );
     }
 
     @AfterMethod
